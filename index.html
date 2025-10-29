@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DADOS5G - Análise Inteligente de Planos</title>
+    <meta name="description" content="DADOS5G - Análise inteligente de planos móveis e comparativos.">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-800">
+    <header class="bg-white shadow">
+        <div class="max-w-5xl mx-auto p-4">
+            <h1 class="text-2xl font-semibold">DADOS5G</h1>
+            <p class="text-sm text-gray-600">Análise inteligente de planos</p>
+        </div>
+    </header>
+
+    <nav aria-label="Menu principal" class="max-w-5xl mx-auto p-4">
+        <ul class="flex gap-4 text-sm">
+            <li><a href="#" class="text-blue-600 hover:underline">Início</a></li>
+            <li><a href="#" class="text-blue-600 hover:underline">Comparar planos</a></li>
+            <li><a href="#" class="text-blue-600 hover:underline">Relatórios</a></li>
+        </ul>
+    </nav>
+
+    <main class="max-w-5xl mx-auto p-4" role="main">
+        <section aria-labelledby="overview">
+            <h2 id="overview" class="text-xl font-medium mb-2">Visão geral</h2>
+            <p class="mb-4 text-gray-600">Use o painel para comparar consumo, custo e qualidade dos planos 5G.</p>
+        </section>
+
+        <section aria-labelledby="chart-section" class="bg-white rounded-lg shadow p-4">
+            <h3 id="chart-section" class="text-lg font-medium mb-2">Exemplo de gráfico</h3>
+            <div class="relative" style="height:400px">
+                <canvas id="planChart" class="w-full h-full" aria-label="Gráfico de comparação de planos" role="img"></canvas>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">Se o gráfico não aparecer, verifique se o JavaScript está habilitado.</p>
+        </section>
+
+        <noscript class="block mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-300">
+            <strong>Aviso:</strong> Este site precisa de JavaScript para funcionar corretamente.
+        </noscript>
+    </main>
+
+    <footer class="max-w-5xl mx-auto p-4 text-sm text-gray-500">
+        © <span id="year"></span> DADOS5G
+    </footer>
+
+    <script>
+    // Script pequeno e seguro para preencher ano e inicializar um gráfico de exemplo.
+    (function () {
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function initChartIfReady() {
+            var canvas = document.getElementById('planChart');
+            if (!canvas) return;
+            if (typeof Chart === 'undefined') return; // Chart.js ainda não carregado
+            if (canvas.dataset.initialized) return;
+
+            var ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Plano A', 'Plano B', 'Plano C'],
+                    datasets: [{
+                        label: 'Custo (R$)',
+                        data: [50, 80, 65],
+                        backgroundColor: ['#60A5FA','#34D399','#F59E0B']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
+
+            canvas.dataset.initialized = 'true';
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                // aguarda Chart.js carregar (carregado com defer)
+                requestAnimationFrame(initChartIfReady);
+            });
+        } else {
+            requestAnimationFrame(initChartIfReady);
+        }
+    })();
+    </script>
+
+    <script src="scripts/app.js" defer></script>
+</body>
+</html>
